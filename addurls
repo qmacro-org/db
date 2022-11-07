@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+source utils.sh
+
+main() {
+
+  local user="${1:?Specify user ID e.g. dj.adams.sap}"
+  local blogposturl title label 
+  label="${user//\./-}"
+
+  while read -r blogposturl; do 
+    echo "$blogposturl"
+    title="$(get_title "$blogposturl" | de_entify)"
+    gh issue create \
+      --label "$label" \
+      --title "$title" \
+      --body "$blogposturl"
+
+    sleep 1
+  done < "$user.dat"
+
+}
+
+main "$@"
