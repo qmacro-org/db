@@ -1,5 +1,26 @@
 #!/usr/bin/env bash
 
+list_issues() {
+
+  local label="${1:?Specify label e.g. dj-adams-sap}"
+  gh issue list \
+    --limit 500 \
+    --label "$label" \
+    --json "number,title,body" 
+
+}  
+
+list_oldest_issues() {
+
+  # Displays the three oldest (by post date) issues
+
+  local label="${1:?Specify label e.g. dj-adams-sap}"
+
+  list_issues "$label" \
+  | jq 'import "utils" as utils; sort_by(.body|utils::date)|reverse|.[:3]'
+
+}
+
 de_entify() {
 
   local str
