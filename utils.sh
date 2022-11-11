@@ -17,7 +17,7 @@ get_oldest_issue() {
   local label="${1:?Specify label e.g. dj-adams-sap}"
 
   list_issues "$label" \
-  | jq -r 'import "utils" as utils; sort_by(.body|utils::date)|first.body'
+  | jq -r 'import "utils" as utils; sort_by(.body|utils::date)|first|[.body, .number]|@tsv'
 
 }
 
