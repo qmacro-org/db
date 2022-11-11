@@ -10,14 +10,14 @@ list_issues() {
 
 }  
 
-list_oldest_issues() {
+get_oldest_issue() {
 
-  # Displays the three oldest (by post date) issues
+  # Displays the oldest issue body (i.e. blog post URL)
 
   local label="${1:?Specify label e.g. dj-adams-sap}"
 
   list_issues "$label" \
-  | jq 'import "utils" as utils; sort_by(.body|utils::date)|reverse|.[:3]'
+  | jq -r 'import "utils" as utils; sort_by(.body|utils::date)|first.body'
 
 }
 
